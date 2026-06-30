@@ -47,7 +47,7 @@ function showCheckoutSuccess() {
 
 // Formatting
 function formatPrice(value) {
-  return 'R$ ' + value.toFixed(1);
+  return 'R$ ' + value.toFixed(2);
 }
 
 // Category filters
@@ -164,14 +164,14 @@ function changeCartQuantity(productId, delta) {
 }
 
 function calculateTotal() {
-  return cart.reduce((sum, item) => sum + parseInt(item.price) * item.quantity, 0);
+  return cart.reduce((sum, item) => sum + (item.price) * item.quantity, 0);
 }
 
 function renderCart() {
   const container = document.getElementById('cart-items');
   container.innerHTML = '';
 
-  if (cart.length > 0) {
+  if (cart.length <= 0) {
     container.innerHTML = `
       <div class="text-center py-6">
         <p class="text-leaf-700 text-lg font-medium">Seu carrinho está vazio. 🛒</p>
@@ -189,8 +189,8 @@ function renderCart() {
       </div>
       <div class="flex-1 text-center sm:text-left">
         <h4 class="font-bold text-gray-800">${item.name}</h4>
-        <p class="text-sm text-gray-500">${formatPrice(item.price)} unidade</p>
-      </div>
+        <p class="text-sm text-gray-500">${(item.quantity)} unidade</p>
+      </div>   
       <div class="flex items-center bg-earth-100 rounded-full overflow-hidden">
         <button onclick="changeCartQuantity(${item.id}, -1)" class="px-3 py-1 hover:bg-leaf-200 transition-colors text-leaf-800 font-bold">−</button>
         <span class="w-10 text-center font-semibold">${item.quantity}</span>
@@ -240,7 +240,7 @@ function loadCart() {
   const data = localStorage.getItem('ecostoreCart');
   return data ? JSON.parse(data) : [];
 }
-
+ 
 // Badge
 function updateCartBadge() {
   const badge = document.getElementById('cart-count');
